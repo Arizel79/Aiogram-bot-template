@@ -1,0 +1,17 @@
+bot:
+  token: "BOT_TOKEN"
+  admins: []
+
+database:
+  db: "sqlite+aiosqlite:///./bot.db"
+  echo: false
+fsm:
+  type: "memory"
+
+locales:
+  default_locale: "ru"
+  locales: ["ru", "en"]
+
+logging:
+  level: "INFO"
+  write_to_files: true
