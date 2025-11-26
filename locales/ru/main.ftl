@@ -1,4 +1,4 @@
-
+throttling-message = ⚠️ Слишком быстро!
 start-message = Привет, { $name }
 
     Добро пожаловать в бота!

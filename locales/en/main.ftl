@@ -1,3 +1,4 @@
+throttling-message = ⚠️ Too fast!
 
 start-message = Hello, { $name }
 
