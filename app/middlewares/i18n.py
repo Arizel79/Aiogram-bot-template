@@ -19,14 +19,6 @@ i18n_middleware = I18nMiddleware(
 )
 
 
-class DatabaseI18nMiddleware(I18nMiddleware):
-    async def get_locale(self, event: TelegramObject, data: Dict[str, Any]) -> str:
-        user = data.get("user")
-        if user and hasattr(user, "language") and user.language:
-            return user.language
-        return config.locales.default_locale
-
-
 class CurrentLocaleMiddleware(BaseMiddleware):
     async def __call__(self, handler: Callable, event, data: Dict[str, Any]) -> Any:
         user = data.get("user")
