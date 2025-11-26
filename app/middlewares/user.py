@@ -3,6 +3,9 @@ from aiogram.types import Update, User as TgUser
 from typing import Any, Dict, Callable, Awaitable
 
 from app.services.user_service import UserService
+from app.config import config, get_middleware_logger
+
+logger = get_middleware_logger("user")
 
 
 class UserMiddleware(BaseMiddleware):
@@ -15,12 +18,17 @@ class UserMiddleware(BaseMiddleware):
         telegram_user: TgUser = data.get("event_from_user")
         user_service: UserService = data.get("user_service")
 
+        language = config.locales.default_locale
+        if telegram_user.language_code in config.locales.available_locales:
+            language = telegram_user.language_code
+
         if telegram_user and user_service:
             user = await user_service.get_or_create_user(
                 telegram_id=telegram_user.id,
                 username=telegram_user.username,
                 first_name=telegram_user.first_name,
                 last_name=telegram_user.last_name,
+                language=language
             )
             data["user"] = user
 

@@ -24,7 +24,7 @@ class DatabaseI18nMiddleware(I18nMiddleware):
         user = data.get("user")
         if user and hasattr(user, "language") and user.language:
             return user.language
-        return config.DEFAULT_LOCALE
+        return config.locales.default_locale
 
 
 class CurrentLocaleMiddleware(BaseMiddleware):

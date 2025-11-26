@@ -6,7 +6,7 @@ bot:
   webhook_path: "/webhook"
 
 database:
-  db: "sqlite+aiosqlite:///./bot.sqlite3"
+  db: "sqlite+aiosqlite:///./db.sqlite3"
   echo: false
   pool_size: 20
   max_overflow: 30

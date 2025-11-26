@@ -1,9 +1,9 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from decimal import Decimal
 
-from app.db.models import User
+from app.config import config
 from app.config.logging import get_logger
+from app.db.models import User
 
 logger = get_logger("user_service")
 
@@ -13,11 +13,12 @@ class UserService:
         self.session = session
 
     async def get_or_create_user(
-        self,
-        telegram_id: int,
-        username: str = None,
-        first_name: str = None,
-        last_name: str = None,
+            self,
+            telegram_id: int,
+            username: str = None,
+            first_name: str = None,
+            last_name: str = None,
+            language: str = config.locales.default_locale
     ) -> User:
         result = await self.session.execute(
             select(User).where(User.telegram_id == telegram_id)

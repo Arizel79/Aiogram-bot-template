@@ -11,8 +11,6 @@ class DatabaseConfig:
     def __init__(self, config: Dict[str, Any]):
         self.url = config.get("db")
         self.echo = config.get("echo", False)
-        self.pool_size = config.get("pool_size", 20)
-        self.max_overflow = config.get("max_overflow", 30)
         self._validate()
 
     def _validate(self):
@@ -24,9 +22,6 @@ class BotConfig:
     def __init__(self, config: Dict[str, Any]):
         self.token = os.getenv("BOT_TOKEN") or config.get("token")
         self.admins: List[int] = config.get("admins", [])
-        self.webhook_url = config.get("webhook_url")
-        self.webhook_path = config.get("webhook_path")
-        self.use_webhook = config.get("use_webhook", False)
         self._validate()
 
     def _validate(self):
@@ -34,10 +29,6 @@ class BotConfig:
             raise ValueError("BOT_TOKEN is required!")
         if ":" not in self.token:
             raise ValueError("Invalid BOT_TOKEN format!")
-
-    @property
-    def is_webhook_mode(self) -> bool:
-        return self.use_webhook and bool(self.webhook_url)
 
 
 class FSMConfig:
@@ -60,23 +51,6 @@ class LocalesConfig:
     def _validate(self):
         if self.default_locale not in self.available_locales:
             raise ValueError(f"DEFAULT_LOCALE '{self.default_locale}' not in AVAILABLE_LOCALES")
-
-    def is_locale_available(self, locale: str) -> bool:
-        return locale in self.available_locales
-
-
-class LoggingConfig:
-    def __init__(self, config: Dict[str, Any]):
-        self.level = config.get("level", "INFO")
-        self.write_to_files = config.get("write_to_files", True)
-        self.rotation = config.get("rotation", "10 MB")
-        self.retention = config.get("retention", "30 days")
-
-
-class RedisConfig:
-    def __init__(self, config: Dict[str, Any]):
-        self.url = config.get("url", "redis://localhost:6379/0")
-        self.use_redis = config.get("use_redis", False)
 
 
 class Config:
@@ -110,8 +84,6 @@ class Config:
         self.bot = BotConfig(self.config.get("bot", {}))
         self.fsm = FSMConfig(self.config.get("fsm", {}))
         self.locales = LocalesConfig(self.config.get("locales", {}), self.BASE_DIR)
-        self.logging = LoggingConfig(self.config.get("logging", {}))
-        self.redis = RedisConfig(self.config.get("redis", {}))
 
     def get(self, key: str, default: Any = None) -> Any:
         keys = key.split('.')
