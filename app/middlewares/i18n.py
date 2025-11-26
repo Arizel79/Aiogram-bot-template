@@ -13,8 +13,8 @@ from app.config import config
 
 i18n_middleware = I18nMiddleware(
     core=FluentRuntimeCore(
-        path=config.LOCALES_DIR,
-        default_locale=config.DEFAULT_LOCALE,
+        path=config.locales.locales_dir,
+        default_locale=config.locales.default_locale,
     )
 )
 

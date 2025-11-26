@@ -17,4 +17,4 @@ def setup_middlewares(dp: Dispatcher):
     dp.update.outer_middleware(UserMiddleware())
     dp.update.outer_middleware(CurrentLocaleMiddleware())
 
-    dp.update.outer_middleware(ThrottlingMiddleware(5, 2))
+    dp.update.outer_middleware(ThrottlingMiddleware(30, 10))

@@ -32,7 +32,7 @@ class TelegramBot:
             await db.init()
 
             self.bot = Bot(
-                token=config.BOT_TOKEN,
+                token=config.bot.token,
                 default=DefaultBotProperties(
                     parse_mode=ParseMode.HTML, link_preview_is_disabled=True
                 ),

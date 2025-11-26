@@ -14,10 +14,10 @@ class Database:
         self.logger = logger
 
     async def init(self):
-        self.logger.info(f"Initializing database: {config.DATABASE_URL}")
+        self.logger.info(f"Initializing database: {config.database.url}")
 
         self.engine = create_async_engine(
-            config.DATABASE_URL,
+            config.database.url,
             echo=False,
             future=True,
         )
