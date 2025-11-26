@@ -24,7 +24,7 @@ async def get_settings_data(dialog_manager: DialogManager, **kwargs):
 
 
 async def go_to_language_settings(
-    callback: CallbackQuery, button: Button, dialog_manager: DialogManager
+        callback: CallbackQuery, button: Button, dialog_manager: DialogManager
 ):
     await dialog_manager.switch_to(SettingsStates.language)
 

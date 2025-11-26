@@ -18,7 +18,7 @@ class UserService:
             username: str = None,
             first_name: str = None,
             last_name: str = None,
-            language: str = config.locales.default_locale
+            language: str = None
     ) -> User:
         result = await self.session.execute(
             select(User).where(User.telegram_id == telegram_id)
@@ -47,6 +47,7 @@ class UserService:
                 username=username,
                 first_name=first_name,
                 last_name=last_name,
+                language=language or config.locales.default_locale  # Используем переданный язык
             )
             self.session.add(user)
             await self.session.commit()

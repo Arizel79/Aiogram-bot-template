@@ -3,7 +3,7 @@ from app.keyboards import get_main_keyboard
 
 
 async def on_language_selected(
-    callback: CallbackQuery, button: Button, dialog_manager: DialogManager
+        callback: CallbackQuery, button: Button, dialog_manager: DialogManager
 ):
     new_language_key = button.widget_id
     user = dialog_manager.middleware_data.get("user")
