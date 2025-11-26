@@ -1,12 +1,19 @@
 bot:
   token: "BOT_TOKEN"
   admins: []
+  use_webhook: false
+  webhook_url: ""
+  webhook_path: "/webhook"
 
 database:
-  db: "sqlite+aiosqlite:///./bot.db"
+  db: "sqlite+aiosqlite:///./bot.sqlite3"
   echo: false
+  pool_size: 20
+  max_overflow: 30
+
 fsm:
-  type: "memory"
+  type: "redis"  # memory | redis
+  redis_url: "redis://192.168.1.50:6379/0"
 
 locales:
   default_locale: "ru"
@@ -15,3 +22,9 @@ locales:
 logging:
   level: "INFO"
   write_to_files: true
+  rotation: "10 MB"
+  retention: "30 days"
+
+redis:
+  url: "redis://localhost:6379/0"
+  use_redis: true

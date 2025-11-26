@@ -2,6 +2,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.fsm.storage.redis import RedisStorage, DefaultKeyBuilder
 from aiogram_dialog import setup_dialogs
 
 from app.config.config import config
@@ -18,8 +19,19 @@ class TelegramBot:
     def __init__(self):
         self.bot = None
         self.dp = None
-        self.registry = None
         self._is_initialized = False
+
+    def _create_storage(self):
+        if config.fsm.is_redis:
+            logger.info(f"Using Redis storage: {config.fsm.redis_url}")
+            key_builder = DefaultKeyBuilder(with_destiny=True)
+            return RedisStorage.from_url(
+                config.fsm.redis_url,
+                key_builder=key_builder
+            )
+        else:
+            logger.info("Using Memory storage")
+            return MemoryStorage()
 
     async def initialize(self):
         if self._is_initialized:
@@ -38,7 +50,7 @@ class TelegramBot:
                 ),
             )
 
-            storage = MemoryStorage()
+            storage = self._create_storage()
             self.dp = Dispatcher(storage=storage)
 
             self.dp["config"] = config
