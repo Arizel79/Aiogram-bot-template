@@ -19,7 +19,10 @@ class UserMiddleware(BaseMiddleware):
         telegram_user: TgUser = data.get("event_from_user")
         user_service: UserService = data.get("user_service")
 
-        telegram_user_language = telegram_user.language_code.split('-')[0]
+        telegram_user_language = None
+        if not telegram_user.language_code is None:
+            telegram_user_language = telegram_user.language_code.split('-')[0]
+
 
         if telegram_user_language in config.locales.available_locales:
             language = telegram_user.language_code

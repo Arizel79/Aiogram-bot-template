@@ -7,6 +7,7 @@ def get_main_keyboard(i18n: I18nContext) -> ReplyKeyboardMarkup:
         keyboard=[
             [
                 KeyboardButton(text=i18n.get("settings-button")),
+                KeyboardButton(text=i18n.get("random-number-button")),
             ]
         ],
         resize_keyboard=True,

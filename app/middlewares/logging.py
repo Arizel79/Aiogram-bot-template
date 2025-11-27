@@ -1,6 +1,9 @@
+from typing import Any, Dict, Callable
+
+import aiogram_dialog
 from aiogram import BaseMiddleware
-from typing import Any, Dict, Callable, Awaitable
-from aiogram.types import Update, Message, CallbackQuery
+from aiogram.types import Update
+
 from app.config import get_middleware_logger
 
 
@@ -10,20 +13,26 @@ class LoggingMiddleware(BaseMiddleware):
         super().__init__()
 
     async def __call__(
-        self, handler: Callable, event: Update, data: Dict[str, Any]
+            self, handler: Callable, event: Update, data: Dict[str, Any]
     ) -> Any:
+        i18n = data["i18n"]
         event_info = self._get_event_info(event)
+        update_id = event.update_id
 
-        self.logger.info(f"<<< incoming: {event_info}")
+        self.logger.info(f"<<< incoming {update_id}: {event_info}")
 
         try:
             result = await handler(event, data)
-            self.logger.info(f">>> processed: {event_info}")
             return result
-
+        except aiogram_dialog.api.exceptions.UnknownIntent as e:
+            self.logger.info(f"ERROR while processing {update_id}: {type(e).__name__}: {e}")
+            if event.callback_query:
+                await event.callback_query.answer(i18n.get("dialog-context-not-found"))
         except Exception as e:
-            self.logger.error(f"❌ ERROR processing {event_info}: {str(e)}")
-            raise
+            self.logger.error(f"ERROR while processing {update_id}: {type(e).__name__}: {e}")
+            self.logger.exception(e)
+        finally:
+            self.logger.info(f">>> processed {update_id}")
 
     def _get_event_info(self, event: Update) -> str:
         event_type = type(event).__name__
@@ -65,11 +74,11 @@ class LoggingMiddleware(BaseMiddleware):
             user = event.chat_join_request.from_user
 
         if user:
-            username = f"@{user.username}" if user.username else "no_username"
+            username = f"@{user.username}, " if user.username else ""
             first_name = f"{user.first_name}"
             last_name = user.last_name if user.last_name else None
             name = first_name + (" " + last_name if last_name else "")
-            return f"👤 {name} ({username}, {user.id})"
+            return f"👤 {name} ({username}{user.id})"
         else:
             return "👤 ?"
 
@@ -115,11 +124,9 @@ class LoggingMiddleware(BaseMiddleware):
         if event.message:
             if event.message.text:
                 text_preview = (
-                    event.message.text[:50] + "..."
-                    if len(event.message.text) > 50
-                    else event.message.text
+                    event.message.text
                 )
-                return f"(📝) {text_preview}"
+                return f"📝 {text_preview}"
             elif event.message.photo:
                 return "🖼️ Photo"
             elif event.message.document:

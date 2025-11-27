@@ -78,7 +78,9 @@ class TelegramBot:
     async def start_polling(self):
         if not self._is_initialized:
             await self.initialize()
-
+        # await self.bot.delete_webhook(drop_pending_updates=True)
+        me = await self.bot.get_me()
+        logger.info(f"bot: {me}")
         logger.info("Starting bot polling...")
         try:
             await self.dp.start_polling(self.bot)

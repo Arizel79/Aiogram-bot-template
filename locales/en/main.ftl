@@ -1,3 +1,5 @@
+unknown-message = 🤔 Unknown command. Please use menu buttons or available commands.
+dialog-context-not-found = ⚠️ Dialog context not found. Try again
 throttling-message = ⚠️ Too fast!
 
 start-message = Hello, { $name }
@@ -6,3 +8,5 @@ start-message = Hello, { $name }
 help-message = Help here
 
 back-button = 🔙 Back
+
+random-number-button = 🎲 Random Number
