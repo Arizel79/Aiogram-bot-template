@@ -1,8 +1,10 @@
+from decimal import Decimal
+
 from sqlalchemy import (
     String,
     Integer,
     BigInteger,
-    func,
+    func, Numeric,
 )
 
 from app.config import config
@@ -20,5 +22,6 @@ class User(Base):
     last_name = Column(String(255), nullable=True)
 
     language = Column(String(2), default=config.locales.default_locale)
+    balance = Column(Numeric(10, 2), nullable=True, default=Decimal("0"))
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())

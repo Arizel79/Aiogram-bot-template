@@ -28,8 +28,8 @@ class Database:
             expire_on_commit=False,
         )
 
-        async with self.engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
+        # async with self.engine.begin() as conn:
+        #     await conn.run_sync(Base.metadata.create_all)
 
         self.logger.info("Database initialized successfully")
 
