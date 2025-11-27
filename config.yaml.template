@@ -12,8 +12,8 @@ database:
   max_overflow: 30
 
 fsm:
-  type: "redis"  # memory | redis
-  redis_url: "redis://192.168.1.50:6379/0"
+  type: "memory"  # memory | redis
+  redis_url: "redis://localhost:6379/0"
 
 locales:
   default_locale: "ru"
