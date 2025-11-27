@@ -3,6 +3,7 @@ from aiogram import Router, types
 from aiogram.filters import Command
 from aiogram_i18n import I18nContext
 from sqlalchemy.ext.asyncio import AsyncSession
+from app.filters import PrivateChatFilter
 
 from app.db.models import User
 from app.services.user_service import UserService
@@ -11,7 +12,7 @@ from app.keyboards import get_main_keyboard  # Добавляем импорт
 router = Router()
 
 
-@router.message()
+@router.message(PrivateChatFilter())
 async def unknown_message_handler(
     message: types.Message,
     user: User,

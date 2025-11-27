@@ -2,7 +2,7 @@ import random
 
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery
-from aiogram_dialog import Dialog, Window, DialogManager
+from aiogram_dialog import Dialog, Window, DialogManager, StartMode, LaunchMode
 from aiogram_dialog.widgets.kbd import Button, Row, Cancel
 from aiogram_dialog.widgets.text import Format
 
@@ -70,4 +70,5 @@ random_number_dialog = Dialog(
         getter=get_random_number_data,
 
     ),
+launch_mode=LaunchMode.SINGLE_TOP
 )
