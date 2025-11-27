@@ -1,8 +1,9 @@
 import random
+
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery
 from aiogram_dialog import Dialog, Window, DialogManager
-from aiogram_dialog.widgets.kbd import Button, Row, Back, Cancel
+from aiogram_dialog.widgets.kbd import Button, Row, Cancel
 from aiogram_dialog.widgets.text import Format
 
 from app.utils.i18n_format import I18NFormat
@@ -12,8 +13,12 @@ class RandomNumberStates(StatesGroup):
     main = State()
 
 
+def get_random_number():
+    return random.randint(0, 100)
+
+
 async def get_random_number_data(dialog_manager: DialogManager, **kwargs):
-    current_number = dialog_manager.dialog_data.get("random_number", 0)
+    current_number = dialog_manager.dialog_data.get("random_number", get_random_number())
     i18n = dialog_manager.middleware_data.get("i18n")
 
     data = {
@@ -34,17 +39,18 @@ async def generate_random_number(
         button: Button,
         dialog_manager: DialogManager
 ):
-    new_number = random.randint(0, 100)
+    new_number = get_random_number()
     dialog_manager.dialog_data["random_number"] = new_number
     await dialog_manager.show()
 
 
 async def on_dialog_close(
-    callback: CallbackQuery,
-    button: Button,
-    dialog_manager: DialogManager
+        callback: CallbackQuery,
+        button: Button,
+        dialog_manager: DialogManager
 ):
     await dialog_manager.done()
+
 
 random_number_dialog = Dialog(
     Window(
